@@ -1,3 +1,9 @@
+## Setup instructions:
+Requirements: nodejs installed on a Linux system
+Create initial React app: `npx create-react-app webclient`
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
