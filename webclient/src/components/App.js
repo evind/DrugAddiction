@@ -1,17 +1,14 @@
 import React from 'react';
 import axios from 'axios';
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route } from 'react-router-dom';
+import QuestionnaireResult from './QuestionnaireResult';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-
-  }
 
   async someFunction() {
-    const response = await axios.request('http://localhost:5000/doctors', {});
+    const response = await axios.get('http://localhost:5000/doctors');
 
-    console.log(response);
+    console.log(response.data);
   }
 
   render() {
@@ -20,6 +17,7 @@ class App extends React.Component {
         <BrowserRouter>
           <Route exact path="/">
             <div>
+              <QuestionnaireResult questionnaireId="4" />
               <input type="button" value="click" onClick={this.someFunction} />
             </div>
           </Route>
