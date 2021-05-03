@@ -10,10 +10,10 @@ try:
         port=3306,
         database="drug_addiction"
     )
+    conn.autocommit = True
 except mariadb.Error as e:
     print(f"Error connecting to database: {e}")
 
-conn.autocommit = True
 
 
 def get_all_doctors():

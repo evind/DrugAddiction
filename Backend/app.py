@@ -1,8 +1,9 @@
 from flask import Flask
-import requests
+from flask_cors import CORS
 from data_utils import *
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 @app.route('/')
 def hello_world():
