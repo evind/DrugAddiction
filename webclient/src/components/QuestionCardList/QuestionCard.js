@@ -1,5 +1,5 @@
-import React from 'react';
-import './QuestionCard.css';
+import React from "react";
+import "./QuestionCard.css";
 
 class QuestionCard extends React.Component {
   constructor(props) {
@@ -7,12 +7,15 @@ class QuestionCard extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <div className="question-card">
         <table>
           <tbody>
             <tr>
-              <th colSpan="100%">{this.props.qNum}. {this.props.qText}</th>
+              <th colSpan="100%">
+                {this.props.qNum}. {this.props.qText}
+              </th>
             </tr>
             <tr>
               <td>Never</td>
@@ -26,7 +29,7 @@ class QuestionCard extends React.Component {
             <tr>
               <td>1</td>
               <td>2</td>
-              <td value="3"/>
+              <td>3</td>
               <td>4</td>
               <td>5</td>
               <td>6</td>
@@ -34,7 +37,7 @@ class QuestionCard extends React.Component {
             </tr>
           </tbody>
         </table>
-        <br/>
+        <br />
       </div>
     );
   }

@@ -58,16 +58,21 @@ def get_all_questionnaires():
 
 
 def get_questionnaire(id):
-    SQL = "SELECT * FROM questionnaires WHERE id=?"
+    SQL1 = "SELECT * FROM questionnaires WHERE id=?"
+    SQL2 = "SELECT * FROM patients WHERE id=?"
     output = []
 
     with conn.cursor(dictionary=True) as cursor:
-        cursor.execute(SQL, (id,))
+        cursor.execute(SQL1, (id,))
         data = cursor.fetchall()
+        cursor.execute(SQL2, (data[0]["patient_id"],))
+        patient_data = cursor.fetchall()
 
     structured = {
         "id": data[0]["id"],
         "patient_id": data[0]["patient_id"],
+        "first_name": patient_data[0]["first_name"],
+        "last_name": patient_data[0]["last_name"],
         "submitted": data[0]["submitted"],
         "score": data[0]["score"],
         "relapse_risk": data[0]["relapse_risk"],

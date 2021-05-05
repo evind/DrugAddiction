@@ -1,5 +1,6 @@
 table {
-    border-collapse: collapse;
+  border-collapse: collapse;
+  width: 33%;
 }
 
 th {
@@ -19,6 +20,6 @@ td {
 }
 
 td.test {
-    font-weight: bold;
-    font-size: 22px;
+  font-weight: bold;
+  font-size: 22px;
 }
