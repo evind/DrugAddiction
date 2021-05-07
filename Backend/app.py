@@ -1,13 +1,14 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from data_utils import *
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+#cors = CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/')
 def hello_world():
-    return 'Hello, world'
+    return 'Running...'
 
 
 @app.route('/patients')
@@ -44,3 +45,11 @@ def get_questionnaires():
 def get_a_questionnaire(id):
     data = get_questionnaire(id)
     return data
+
+
+@app.route('/submitquestionnaire', methods=['POST'])
+def submit():
+    if request.method == 'POST':
+        submission = request.get_json(force=True)
+        submit_questionnaire(submission)
+    return "ok"

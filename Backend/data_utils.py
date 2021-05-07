@@ -1,6 +1,7 @@
 import mariadb
 import json
 from flask import jsonify
+from datetime import datetime
 
 
 try:
@@ -96,3 +97,31 @@ def get_questionnaire(id):
     structured["results"] = output
 
     return jsonify(structured)
+
+
+def submit_questionnaire(submission):
+    SQL = (
+        "INSERT INTO questionnaires ("
+        "patient_id,"
+        "submitted,"
+        "score,"
+        "relapse_risk,"
+        "has_drank,"
+        "q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14,"
+        "q15,q16,q17,q18,q19,q20,q21,q22,q23,q24,q25,q26,q27,q28"
+        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+    )
+
+    buildSQL = "INSERT INTO questionnaires ("
+    submission["submitted"] = datetime.now()
+
+    data = []
+    for k,v in sorted(submission.items()):
+        buildSQL += f"{k},"
+        data.append(v)
+
+    buildSQL = buildSQL.rstrip(',')
+    buildSQL += ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+
+    with conn.cursor(dictionary=True) as cursor:
+        cursor.execute(buildSQL, data)
