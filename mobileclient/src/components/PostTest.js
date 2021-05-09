@@ -15,7 +15,7 @@ class PostTest extends React.Component {
       score: 28,
       relapse_risk: 80,
       has_drank: true,
-      q1: 1,
+      q1: 2,
       q2: 1,
       q3: 1,
       q4: 1,

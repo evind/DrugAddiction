@@ -6,8 +6,9 @@ class QuestionForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { selectedVal: null, formAnswers: {} };
+    this.state = { submitted: false, formAnswers: {} };
   }
+
 
   onFormSubmit = (event) => {
     event.preventDefault();
@@ -23,7 +24,6 @@ class QuestionForm extends React.Component {
       relapse_risk: 42,
       ...this.state.formAnswers
     };
-    
 
     axios.post('http://127.0.0.1:5000/submitquestionnaire', data);
     alert("Form submitted");

@@ -29,7 +29,17 @@ class QuestionnaireResult extends React.Component {
     const paramId = this.props.match.params.id;
     const res = await axios.get(
       `http://localhost:5000/questionnaires/${paramId}`
-    );
+    ).catch((error) => {
+      if (error.response) {
+        console.log("error.res.data: ", error.res.data);
+        console.log("error.res.status: ", error.res.status);
+        console.log("error.res.headers: ", error.res.headers);
+      } else if("error.request: ", error.request) {
+        console.log("error.request: ", error.request);
+      } else {
+        console.log('Error', error.message);
+      }
+    });
 
     this.setState({ data: res.data, dataRetrieved: true });
   };

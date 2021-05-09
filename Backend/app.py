@@ -4,7 +4,8 @@ from data_utils import *
 
 app = Flask(__name__)
 #cors = CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
-cors = CORS(app, resources={r"/*": {"origins": "*"}})
+#cors = CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
 
 @app.route('/')
 def hello_world():
