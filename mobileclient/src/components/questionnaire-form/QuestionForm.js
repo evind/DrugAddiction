@@ -1,6 +1,6 @@
-import React from 'react';
-import QuestionCardList from './QuestionCardList';
-import axios from 'axios';
+import React from "react";
+import QuestionCardList from "./QuestionCardList";
+import axios from "axios";
 
 class QuestionForm extends React.Component {
   constructor(props) {
@@ -8,7 +8,6 @@ class QuestionForm extends React.Component {
 
     this.state = { submitted: false, formAnswers: {} };
   }
-
 
   onFormSubmit = (event) => {
     event.preventDefault();
@@ -20,30 +19,37 @@ class QuestionForm extends React.Component {
       submitted: Date.now().toString(),
       has_drank: Math.random() < 0.5,
       score: Object.values(this.state.formAnswers).reduce(
-        (accumulator, currentValue) => accumulator + currentValue),
+        (accumulator, currentValue) => accumulator + currentValue
+      ),
       relapse_risk: 42,
-      ...this.state.formAnswers
+      ...this.state.formAnswers,
     };
 
-    axios.post('http://127.0.0.1:5000/submitquestionnaire', data);
-    alert("Form submitted");
-  }
+    axios.post("http://127.0.0.1:5000/submitquestionnaire", data);
+    this.setState({ submitted: true });
+  };
 
   getFormAnswers = (data) => {
-    this.setState({ formAnswers: {...data} });
+    this.setState({ formAnswers: { ...data } });
+  };
+
+  renderContent() {
+    if (this.state.submitted === false) {
+      return (
+        <div>
+          <form onSubmit={this.onFormSubmit}>
+            <QuestionCardList onChangeCallback={this.getFormAnswers} />
+            <input type="submit" value="Submit" />
+          </form>
+        </div>
+      );
+    } else {
+      return <div>Submission successful</div>;
+    }
   }
 
   render() {
-    return (
-      <div>
-        <form onSubmit={this.onFormSubmit}>
-          <QuestionCardList
-            onChange={this.getFormAnswers}
-          />
-          <input type="submit" value="Submit" />
-        </form>
-      </div>
-    );
+    return <div>{this.renderContent()}</div>;
   }
 }
 

@@ -7,7 +7,9 @@ export const questions = [
   { id: "q6", text: "I feel blue, down, listless, or depressed." },
   { id: "q7", text: "I engage in wishful thinking." },
   { id: "q8", text: "The plans that I make succeed." },
-  { id: "q9", text: "I have trouble concentrating and prefer to dream about how things could be."
+  {
+    id: "q9",
+    text: "I have trouble concentrating and prefer to dream about how things could be.",
   },
   { id: "q10", text: "Things don’t work out well for me." },
   { id: "q11", text: "I feel confused." },
@@ -18,7 +20,10 @@ export const questions = [
   { id: "q16", text: "I have trouble sleeping." },
   { id: "q17", text: "I have long periods of serious depression." },
   { id: "q18", text: "I don’t really care what happens." },
-  { id: "q19", text: "I feel like things are so bad that I might as well drink." },
+  {
+    id: "q19",
+    text: "I feel like things are so bad that I might as well drink.",
+  },
   { id: "q20", text: "I am able to think clearly." },
   { id: "q21", text: "I feel sorry for myself." },
   { id: "q22", text: "I think about drinking." },
@@ -27,5 +32,5 @@ export const questions = [
   { id: "q25", text: "I feel angry at the world in general." },
   { id: "q26", text: "I am doing things to stay sober." },
   { id: "q27", text: "I am afraid that I am losing my mind." },
-  { id: "q28", text: "I am drinking out of control." }
+  { id: "q28", text: "I am drinking out of control." },
 ];

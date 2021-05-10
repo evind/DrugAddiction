@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
-import QuestionForm from './questionnaire-form/QuestionForm';
-import PostTest from './PostTest';
+import QuestionForm from "./questionnaire-form/QuestionForm";
+import PostTest from "./PostTest";
 
 class App extends React.Component {
   render() {

@@ -1,8 +1,7 @@
 ## Setup instructions:
+
 Requirements: nodejs installed on a Linux system
 Create initial React app: `npx create-react-app webclient`
-
-
 
 # Getting Started with Create React App
 

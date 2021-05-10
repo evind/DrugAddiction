@@ -1,5 +1,5 @@
-import React from 'react';
-import ResponseSlider from './ResponseSlider';
+import React from "react";
+import ResponseSlider from "./ResponseSlider";
 
 class QuestionCard extends React.Component {
   constructor(props) {
@@ -9,15 +9,15 @@ class QuestionCard extends React.Component {
   }
 
   getSliderValue = (val) => {
-    this.props.onChange(this.props.questionId, val);
-  }
+    this.props.onChangeCallback(this.props.questionId, val);
+  };
 
   render() {
     return (
       <div>
-        <ResponseSlider 
-          questionText={this.props.questionText} 
-          onChange={this.getSliderValue}
+        <ResponseSlider
+          questionText={this.props.questionText}
+          onChangeCallback={this.getSliderValue}
         />
       </div>
     );

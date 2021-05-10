@@ -1,11 +1,11 @@
-import React from 'react';
-import axios from 'axios';
+import React from "react";
+import axios from "axios";
 
 class PostTest extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { };
+    this.state = {};
   }
 
   componentDidMount() {
@@ -42,19 +42,15 @@ class PostTest extends React.Component {
       q25: 1,
       q26: 1,
       q27: 1,
-      q28: 1
+      q28: 1,
     };
 
     // axios.post('http://127.0.0.1:5000/submitquestionnaire', JSON.stringify(data));
-    axios.post('http://127.0.0.1:5000/submitquestionnaire', data);
+    axios.post("http://127.0.0.1:5000/submitquestionnaire", data);
   }
 
   render() {
-    return (
-      <div>
-        post
-      </div>
-    );
+    return <div>post</div>;
   }
 }
 

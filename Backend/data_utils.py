@@ -10,12 +10,11 @@ try:
         password="temporary",
         host="127.0.0.1",
         port=3306,
-        database="drug_addiction"
+        database="drug_addiction",
     )
     conn.autocommit = True
 except mariadb.Error as e:
     print(f"Error connecting to database: {e}")
-
 
 
 def get_all_doctors():
@@ -78,15 +77,12 @@ def get_questionnaire(id):
         "score": data[0]["score"],
         "relapse_risk": data[0]["relapse_risk"],
         "has_drank": data[0]["has_drank"],
-        "results": []
+        "results": [],
     }
 
     for key, val in data[0].items():
         if key not in structured:
-            structured["results"].append({
-                "id": key,
-                "result": val
-            })
+            structured["results"].append({"id": key, "result": val})
 
     with open("./static/questionnaire.json") as infile:
         questionnaire = json.load(infile)
@@ -104,12 +100,14 @@ def submit_questionnaire(submission):
     submission["submitted"] = datetime.now()
 
     data = []
-    for k,v in sorted(submission.items()):
+    for k, v in sorted(submission.items()):
         buildSQL += f"{k},"
         data.append(v)
 
-    buildSQL = buildSQL.rstrip(',')
-    buildSQL += ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+    buildSQL = buildSQL.rstrip(",")
+    buildSQL += (
+        ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+    )
 
     with conn.cursor(dictionary=True) as cursor:
         cursor.execute(buildSQL, data)
