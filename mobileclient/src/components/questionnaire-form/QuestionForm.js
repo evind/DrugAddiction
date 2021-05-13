@@ -24,18 +24,17 @@ class QuestionForm extends React.Component {
       patient_id: 4,
       submitted: Date.now().toString(),
       has_drank: Math.random() < 0.5,
-      score: Object.values(this.state.formAnswers).reduce(
-        (accumulator, currentValue) => accumulator + currentValue
-      ),
-      relapse_risk: 42,
+      score: null,
+      relapse_risk: null,
       ...this.state.formAnswers,
     };
 
-    axios.post("http://127.0.0.1:5000/submitquestionnaire", data);
+    axios.post(urls.backendURL + "/submitquestionnaire", data);
     this.setState({ submitted: true });
   };
 
   getFormAnswers = (data) => {
+    console.log(data);
     this.setState({ formAnswers: { ...data } });
   };
 
@@ -77,16 +76,12 @@ class QuestionForm extends React.Component {
       patient_id: 4,
       submitted: Date.now().toString(),
       has_drank: Math.random() < 0.5,
-      score: Object.values(fakeData).reduce(
-        (accumulator, currentValue) => accumulator + currentValue
-      ),
-      relapse_risk: 42,
+      score: null,
+      relapse_risk: null,
       ...fakeData,
     };
 
-    console.log("1----------------");
-    axios.post("/submitquestionnaire", data);
-    console.log("2----------------");
+    axios.post(urls.backendURL + "/submitquestionnaire", data);
     this.setState({ submitted: true });
   };
 

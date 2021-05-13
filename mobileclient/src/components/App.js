@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import QuestionForm from "./questionnaire-form/QuestionForm";
 import PostTest from "./PostTest";
+import "../static/app.css";
 
 class App extends React.Component {
   render() {

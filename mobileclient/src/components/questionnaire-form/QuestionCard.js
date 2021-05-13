@@ -1,24 +1,27 @@
 import React from "react";
-import ResponseSlider from "./ResponseSlider";
+import RadioGroup from "./RadioGroup";
+import "./QuestionCard.css";
 
 class QuestionCard extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = { val: null };
   }
 
-  getSliderValue = (val) => {
-    this.props.onChangeCallback(this.props.questionId, val);
+  getRadioGroupValue = (key, val) => {
+    this.props.onChangeCallback(key, val);
   };
 
   render() {
     return (
-      <div>
-        <ResponseSlider
-          questionText={this.props.questionText}
-          onChangeCallback={this.getSliderValue}
-        />
+      <div className="question-card">
+        <div>{this.props.questionText}</div>
+        <br />
+        <div>
+          <RadioGroup
+            group={this.props.group}
+            onChangeCallback={this.getRadioGroupValue}
+          />
+        </div>
       </div>
     );
   }

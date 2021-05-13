@@ -26,7 +26,7 @@ class QuestionCardList extends React.Component {
       return (
         <QuestionCard
           key={question.id}
-          questionId={question.id}
+          group={question.id}
           questionText={question.text}
           onChangeCallback={this.setFormAnswers}
         />
