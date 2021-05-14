@@ -1,6 +1,6 @@
 import React from "react";
-import "./QuestionnaireTable.css";
 import TableRowList from "./TableRowList";
+import "./QuestionnaireTable.css";
 
 class QuestionnaireTable extends React.Component {
   constructor(props) {
@@ -9,11 +9,11 @@ class QuestionnaireTable extends React.Component {
 
   render() {
     return (
-      <div>
-        <table>
+      <div className="table-container">
+        <table className="ui celled table">
           <thead>
             <tr>
-              <th></th>
+              <th>Question</th>
               <th>Never</th>
               <th>Rarely</th>
               <th>Sometimes</th>

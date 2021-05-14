@@ -8,7 +8,9 @@ const TableRowList = (props) => {
     i++;
     return (
       <tr key={row.id}>
-        <td>{row.question}</td>
+        <td>
+          {i}. {row.question}
+        </td>
         <TableData name="Never" ans={row.answer} />
         <TableData name="Rarely" ans={row.answer} />
         <TableData name="Sometimes" ans={row.answer} />

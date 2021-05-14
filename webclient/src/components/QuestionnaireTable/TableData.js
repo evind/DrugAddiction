@@ -1,5 +1,9 @@
 import React from "react";
 
+const tdStyle = {
+  textAlign: "center",
+};
+
 class TableData extends React.Component {
   constructor(props) {
     super(props);
@@ -31,7 +35,11 @@ class TableData extends React.Component {
   renderContent() {}
 
   render() {
-    return <td className="tData">{this.state.text}</td>;
+    return (
+      <td style={tdStyle} className="tData">
+        {this.state.text}
+      </td>
+    );
   }
 }
 

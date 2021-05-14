@@ -14,7 +14,10 @@ class QuestionCard extends React.Component {
   render() {
     return (
       <div className="question-card">
-        <div>{this.props.questionText}</div>
+        <div>
+          Q.{this.props.group.slice(1) + " "}
+          {this.props.questionText}
+        </div>
         <br />
         <div>
           <RadioGroup

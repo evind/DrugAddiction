@@ -52,6 +52,7 @@ def get_a_questionnaire(id):
 @app.route("/submitquestionnaire", methods=["POST"])
 def submit():
     if request.method == "POST":
+        print("POST")
         submission = request.get_json(force=True)
         submit_questionnaire(submission)
     return "ok"

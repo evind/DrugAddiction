@@ -1,5 +1,9 @@
 import React from "react";
 
+const radioStyle = {
+  lineHeight: "200%",
+};
+
 class RadioGroup extends React.Component {
   constructor(props) {
     super(props);
@@ -8,7 +12,7 @@ class RadioGroup extends React.Component {
   }
 
   onOptionChange = (event) => {
-    this.setState({ answer: event.target.value }, () => {
+    this.setState({ answer: parseInt(event.target.value) }, () => {
       this.props.onChangeCallback(this.props.group, this.state.answer);
       console.log("QuestionCard.onOptionChange()");
       console.log(this.props.group, ":", this.state.answer);
@@ -17,7 +21,7 @@ class RadioGroup extends React.Component {
 
   render() {
     return (
-      <div onChange={this.onOptionChange}>
+      <div style={radioStyle} onChange={this.onOptionChange}>
         <label>
           <input type="radio" value={1} name={this.props.group} /> Never
         </label>

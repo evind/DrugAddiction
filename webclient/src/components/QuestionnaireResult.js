@@ -19,9 +19,9 @@ class QuestionnaireResult extends React.Component {
 
   renderHasDrank() {
     if (this.state.data.has_drank) {
-      return "Yes.";
+      return "Yes";
     } else {
-      return "No.";
+      return "No";
     }
   }
 
@@ -47,17 +47,34 @@ class QuestionnaireResult extends React.Component {
   render() {
     return (
       <div>
-        <div>
-          Patient: {this.state.data.first_name} {this.state.data.last_name}
+        <div className="table-container">
+          <table className="ui celled table">
+            <tbody>
+              <tr>
+                <td>Patient</td>
+                <td>
+                  {this.state.data.first_name} {this.state.data.last_name}
+                </td>
+              </tr>
+              <tr>
+                <td>Submitted</td>
+                <td>{this.state.data.submitted}</td>
+              </tr>
+              <tr>
+                <td>Score</td>
+                <td>{this.state.data.score}</td>
+              </tr>
+              <tr>
+                <td>Risk of relapse in the next 2 months</td>
+                <td>{this.state.data.relapse_risk}</td>
+              </tr>
+              <tr>
+                <td>Drank in the last 2 months</td>
+                <td>{this.renderHasDrank()}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div>Submitted: {this.state.data.submitted}</div>
-        <div>Score: {this.state.data.score}</div>
-        <div>
-          Relapse of relapse in the next 2 months:{" "}
-          {this.state.data.relapse_risk}%
-        </div>
-        <br />
-        <div>Have you drank in the last 2 months: {this.renderHasDrank()}</div>
         <br />
         <div className="question-card-container">
           {this.renderQuestionnaireTable()}
@@ -66,5 +83,28 @@ class QuestionnaireResult extends React.Component {
     );
   }
 }
+
+//   render() {
+//     return (
+//       <div>
+//         <div>
+//           Patient: {this.state.data.first_name} {this.state.data.last_name}
+//         </div>
+//         <div>Submitted: {this.state.data.submitted}</div>
+//         <div>Score: {this.state.data.score}</div>
+//         <div>
+//           Relapse of relapse in the next 2 months:{" "}
+//           {this.state.data.relapse_risk}%
+//         </div>
+//         <br />
+//         <div>Have you drank in the last 2 months: {this.renderHasDrank()}</div>
+//         <br />
+//         <div className="question-card-container">
+//           {this.renderQuestionnaireTable()}
+//         </div>
+//       </div>
+//     );
+//   }
+// }
 
 export default QuestionnaireResult;

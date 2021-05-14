@@ -26,7 +26,7 @@ class QuestionForm extends React.Component {
       has_drank: Math.random() < 0.5,
       score: null,
       relapse_risk: null,
-      ...this.state.formAnswers,
+      answers: { ...this.state.formAnswers },
     };
 
     axios.post(urls.backendURL + "/submitquestionnaire", data);
@@ -74,12 +74,12 @@ class QuestionForm extends React.Component {
 
     const data = {
       patient_id: 4,
-      submitted: Date.now().toString(),
       has_drank: Math.random() < 0.5,
-      score: null,
-      relapse_risk: null,
-      ...fakeData,
+      answers: { ...fakeData },
     };
+
+    console.log("########");
+    console.log(data);
 
     axios.post(urls.backendURL + "/submitquestionnaire", data);
     this.setState({ submitted: true });
