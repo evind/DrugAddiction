@@ -1,0 +1,25 @@
+.patient-details-container {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  border-radius: 20px;
+  padding: 2%;
+  width: 40%;
+  background-color: white;
+  /* margin: 0 auto; centers container */
+}
+
+.patient-details-header {
+  font-weight: bold;
+  font-size: large;
+  padding-bottom: 5px;
+}
+
+.patient-details-body {
+}
+
+.patient-details-footer {
+  padding-top: 10px;
+}
+
+.patient-address {
+}

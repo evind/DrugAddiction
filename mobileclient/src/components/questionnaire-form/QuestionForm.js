@@ -8,6 +8,18 @@ const urls = {
   mobileclientURL: "http://192.168.0.242:3001",
 };
 
+const cardStyle = {
+  backgroundColor: "white",
+  display: "block",
+  flexFlow: "row wrap",
+  alignItems: "center",
+  padding: "5%",
+  margin: "10px",
+  borderRadius: "15px",
+  border: "1px solid white",
+  height: "auto",
+};
+
 class QuestionForm extends React.Component {
   constructor(props) {
     super(props);
@@ -90,6 +102,7 @@ class QuestionForm extends React.Component {
       return (
         <div>
           <input
+            className="ui primary button"
             type="button"
             value="Submit 1s"
             onClick={() => {

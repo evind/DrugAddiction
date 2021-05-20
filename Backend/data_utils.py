@@ -126,7 +126,6 @@ def calculate_relapse_risk(score, has_drank):
 
 
 def submit_questionnaire(submission):
-    print(submission)
     submission["submitted"] = datetime.now()
     submission["score"] = calculate_score(submission["answers"])
     submission["relapse_risk"] = calculate_relapse_risk(
