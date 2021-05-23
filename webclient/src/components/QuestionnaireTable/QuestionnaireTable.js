@@ -3,10 +3,6 @@ import TableRowList from "./TableRowList";
 import "./QuestionnaireTable.css";
 
 class QuestionnaireTable extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div className="table-container">

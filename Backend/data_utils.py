@@ -25,12 +25,32 @@ def get_all_doctors():
     return jsonify(data)
 
 
-def get_doctor(id):
-    SQL = "SELECT * FROM doctors WHERE id=?"
+def get_doctor(email):
+    SQL = "SELECT * FROM doctors WHERE email=?"
+    with conn.cursor(dictionary=True) as cursor:
+        cursor.execute(SQL, (email,))
+        data = cursor.fetchall()
+        if data:
+            return data
+        else:
+            return -1
+
+def get_patients_by_doctor(id):
+    SQL = "SELECT * FROM patients WHERE doctor_id=?"
     with conn.cursor(dictionary=True) as cursor:
         cursor.execute(SQL, (id,))
         data = cursor.fetchall()
-    return jsonify(data)
+        returnData = []
+
+        for i in data:
+            returnData.append({
+                "id": i["id"],
+                "first_name": i["first_name"],
+                "last_name": i["last_name"],
+                "dob": i["dob"]
+            })
+
+        return returnData
 
 
 def get_all_patients():

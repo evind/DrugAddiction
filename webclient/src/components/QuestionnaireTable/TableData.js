@@ -15,19 +15,19 @@ class TableData extends React.Component {
     const name = this.props.name;
     const answer = this.props.ans;
 
-    if (name == "Never" && answer == 1) {
+    if (name === "Never" && answer === 1) {
       this.setState({ text: "X" });
-    } else if (name == "Rarely" && answer == 2) {
+    } else if (name === "Rarely" && answer === 2) {
       this.setState({ text: "X" });
-    } else if (name == "Sometimes" && answer == 3) {
+    } else if (name === "Sometimes" && answer === 3) {
       this.setState({ text: "X" });
-    } else if (name == "Fairly Often" && answer == 4) {
+    } else if (name === "Fairly Often" && answer === 4) {
       this.setState({ text: "X" });
-    } else if (name == "Often" && answer == 5) {
+    } else if (name === "Often" && answer === 5) {
       this.setState({ text: "X" });
-    } else if (name == "Almost Always" && answer == 6) {
+    } else if (name === "Almost Always" && answer === 6) {
       this.setState({ text: "X" });
-    } else if (name == "Always" && answer == 7) {
+    } else if (name === "Always" && answer === 7) {
       this.setState({ text: "X" });
     }
   }

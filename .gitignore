@@ -1,6 +1,7 @@
 bin/
 .prettierrc.json
 component-tree.txt
+notes.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

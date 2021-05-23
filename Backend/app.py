@@ -1,16 +1,79 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from data_utils import *
+from flask_jwt_extended import (JWTManager, create_access_token,
+                               create_refresh_token, get_jwt,
+                               jwt_required, get_jwt_identity)
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
+
+app.config['JWT_SECRET_KEY'] = 'ejkwlqejqlwk'
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=20)
 # cors = CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 # cors = CORS(app, resources={r"/*": {"origins": "*"}})
+jwt = JWTManager(app)
 CORS(app)
 
 
 @app.route("/")
 def hello_world():
     return "Running..."
+
+
+"""
+Refresh tokens:
+    1. Store the expiry time of access token in frontend
+    2. Each time you make an API requests, first check if current access token
+       is near or already expired
+      2a. If yes: refresh it
+      2b. Else: send access token
+"""
+@app.route("/login", methods=['POST'])
+def login():
+    print("### /login: ")
+    login_json = request.get_json()
+
+    email = login_json.get('email')
+    password = login_json.get('password')
+
+    doctor = get_doctor(email)
+    if doctor == -1:
+        return jsonify(msg="error"), 401
+    else:
+        doctor = doctor.get_json()[0]
+
+    if password != doctor["password"]:
+        return jsonify({'msg': 'Bad username or password'}), 401
+
+    access_token = create_access_token(identity=email)
+    refresh_token = create_refresh_token(identity=email)
+    return jsonify(access_token=access_token, refresh_token=refresh_token)
+
+@app.route("/refresh_token", methods=['GET'])
+@jwt_required(refresh=True)
+def refresh_token():
+    print("### /refresh_token: ", get_jwt_identity)
+    identity = get_jwt_identity()
+    access_token = create_access_token(identity=identity)
+    return jsonify(access_token=access_token)
+
+
+@app.route("/dashboard", methods=['GET'])
+@jwt_required()
+def dashboard():
+    identity = get_jwt_identity()
+
+    doctor = get_doctor(identity)
+    if doctor != -1:
+        doctor = doctor[0]
+    else:
+        return jsonify(msg="Cannot find doctor")
+
+    patients_in_group = get_patients_by_doctor(doctor["id"])
+
+    return jsonify(doctor=doctor, patients_in_group=patients_in_group)
 
 
 @app.route("/patients")
