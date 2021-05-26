@@ -16,16 +16,16 @@ class TextInput extends React.Component {
 
   render() {
     return (
-      <div>
-        <label>
-          {this.props.label}
+      <div className="text-input-container">
+        <div className="text-input-label">{this.props.label}</div>
+        <div className="ui input">
           <input
             type={this.props.type}
             name={this.props.name}
             value={this.state.value}
             onChange={this.handleChange}
           />
-        </label>
+        </div>
       </div>
     );
   }

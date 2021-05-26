@@ -50,14 +50,22 @@ class Dashboard extends React.Component {
 
   generatePatientList = () => {
     console.log("generatePatientsList(): ");
+    const date1 = new Date(this.state.data.patients_in_group[0].dob);
+    console.log(date1);
     const patients = this.state.data.patients_in_group.map((patient) => (
       <li key={patient.id}>
-        <Link to="/patientoverview">
-          {patient.id} {patient.first_name} {patient.last_name} {patient.dob}
+        <Link to={`/patientoverview/${patient.id}`}>
+          {patient.id} {patient.first_name} {patient.last_name}{" "}
+          {new Date(patient.dob).toLocaleDateString()}
         </Link>
       </li>
     ));
     return patients;
+  };
+
+  handleAddPatient = () => {
+    document.getElementById("add-patient-form-container").style.display =
+      "block";
   };
 
   renderContent = () => {
@@ -84,7 +92,16 @@ class Dashboard extends React.Component {
   };
 
   render() {
-    return <div>{this.renderContent()}</div>;
+    return (
+      <div>
+        {this.renderContent()}
+        <div>
+          <Link to="/dashboard/addpatient">
+            <button type="text">Add Patient</button>
+          </Link>
+        </div>
+      </div>
+    );
   }
 }
 

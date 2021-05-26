@@ -1,7 +1,7 @@
 .qs-header-container {
-  border: 5px solid blue;
   display: flex;
   justify-content: space-between;
+  padding: 5px;
 }
 
 .qs-header-text {

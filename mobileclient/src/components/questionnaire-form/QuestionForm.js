@@ -1,5 +1,6 @@
 import React from "react";
 import QuestionCardList from "./QuestionCardList";
+import InitialQuestionCard from "./InitialQuestionCard";
 import axios from "axios";
 
 const urls = {
@@ -44,6 +45,8 @@ class QuestionForm extends React.Component {
     axios.post(urls.backendURL + "/submitquestionnaire", data);
     this.setState({ submitted: true });
   };
+
+  getInitialQuestion = () => {};
 
   getFormAnswers = (data) => {
     console.log(data);
@@ -102,7 +105,6 @@ class QuestionForm extends React.Component {
       return (
         <div>
           <input
-            className="ui primary button"
             type="button"
             value="Submit 1s"
             onClick={() => {
@@ -117,8 +119,9 @@ class QuestionForm extends React.Component {
             }}
           />
           <form onSubmit={this.onFormSubmit}>
+            <InitialQuestionCard onChangeCallback={this.getInitialQuestion} />
             <QuestionCardList onChangeCallback={this.getFormAnswers} />
-            <input type="submit" value="Submit" />
+            <input className="submit-button" type="submit" value="Submit" />
           </form>
         </div>
       );

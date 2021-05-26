@@ -1,5 +1,18 @@
 .patient-overview-container {
-  border: 5px solid purple;
-  background-color: #c8fcae;
   padding: 10%;
+  padding-top: 5%;
+}
+
+.patient-overview-top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.patient-overview-chart {
+  display: flex;
+  max-width: 900;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  padding: 10px;
+  background-color: white;
 }

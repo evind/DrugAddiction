@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 app = Flask(__name__)
 
 app.config['JWT_SECRET_KEY'] = 'ejkwlqejqlwk'
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=24)
 app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=20)
 # cors = CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 # cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -38,17 +38,18 @@ def login():
     email = login_json.get('email')
     password = login_json.get('password')
 
-    doctor = get_doctor(email)
+    doctor = get_doctor_by_email(email)
+
     if doctor == -1:
         return jsonify(msg="error"), 401
     else:
-        doctor = doctor.get_json()[0]
+        doctor = doctor[0]
 
     if password != doctor["password"]:
         return jsonify({'msg': 'Bad username or password'}), 401
 
-    access_token = create_access_token(identity=email)
-    refresh_token = create_refresh_token(identity=email)
+    access_token = create_access_token(identity=doctor["id"])
+    refresh_token = create_refresh_token(identity=doctor["id"])
     return jsonify(access_token=access_token, refresh_token=refresh_token)
 
 @app.route("/refresh_token", methods=['GET'])
@@ -74,6 +75,35 @@ def dashboard():
     patients_in_group = get_patients_by_doctor(doctor["id"])
 
     return jsonify(doctor=doctor, patients_in_group=patients_in_group)
+
+
+@app.route("/patientoverview/<int:patient_id>", methods=['GET'])
+@jwt_required()
+def patient_overview(patient_id):
+    identity = get_jwt_identity()
+
+    # Get patient data
+    patient_details = get_patient(patient_id)
+    if patient_details != -1:
+        patient_details = patient_details[0]
+    else:
+        return jsonify(msg="Cannot find patient")
+
+    # Return error if patient does not belong to doctor
+    if patient_details["doctor_id"] != identity:
+        return jsonify(msg="Error: not your patient")
+
+    # Get questionnaire data for this patient
+    questionnaire_data = get_patient_questionnaires(patient_id)
+
+    for i in questionnaire_data:
+        i["submitted"] = i["submitted"].isoformat()
+
+    returnData = jsonify(
+        patient_details=patient_details,
+        questionnaire_data=questionnaire_data
+    )
+    return returnData
 
 
 @app.route("/patients")

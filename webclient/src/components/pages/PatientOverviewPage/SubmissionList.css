@@ -1,0 +1,35 @@
+.qs-list-container {
+  border: 2px solid lightgoldenrodyellow;
+  border-radius: 15px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button.qs-list-item {
+  margin: 5px;
+  padding: 5px;
+  display: flex;
+  justify-content: space-evenly;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 99%;
+}
+
+/* .qs-list-item:hover {
+  border: 2px solid goldenrod;
+} */
+
+.qs-list-item-1 {
+  padding: inherit;
+}
+
+.qs-list-item-2 {
+  padding: inherit;
+}
+
+.qs-list-item-3 {
+  padding: inherit;
+}
+
+.qs-list-item-4 {
+  padding: inherit;
+}

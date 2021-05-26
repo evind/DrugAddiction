@@ -1,0 +1,6 @@
+.add-patient-form-container {
+  border: 5px solid red;
+  border-radius: 10px;
+  width: 400px;
+  height: 400px;
+}

@@ -25,11 +25,28 @@ def get_all_doctors():
     return jsonify(data)
 
 
-def get_doctor(email):
+def get_doctor(id):
+    SQL = "SELECT * FROM doctors WHERE id=?"
+    with conn.cursor(dictionary=True) as cursor:
+        cursor.execute(SQL, (id,))
+        data = cursor.fetchall()
+        print("############")
+        print(data)
+        print("############")
+        if data:
+            return data
+        else:
+            return -1
+
+
+def get_doctor_by_email(email):
     SQL = "SELECT * FROM doctors WHERE email=?"
     with conn.cursor(dictionary=True) as cursor:
         cursor.execute(SQL, (email,))
         data = cursor.fetchall()
+        print("############")
+        print(data)
+        print("############")
         if data:
             return data
         else:
@@ -66,7 +83,10 @@ def get_patient(id):
     with conn.cursor(dictionary=True) as cursor:
         cursor.execute(SQL, (id,))
         data = cursor.fetchall()
-    return jsonify(data)
+        if data:
+            return data
+        else:
+            return -1
 
 
 def get_all_questionnaires():
@@ -75,6 +95,14 @@ def get_all_questionnaires():
         cursor.execute(SQL)
         data = cursor.fetchall()
     return jsonify(data)
+
+
+def get_patient_questionnaires(patient_id):
+    SQL = "SELECT * FROM questionnaires WHERE patient_id=?"
+    with conn.cursor(dictionary=True) as cursor:
+        cursor.execute(SQL, (patient_id,))
+        data = cursor.fetchall()
+    return data
 
 
 def get_questionnaire(id):

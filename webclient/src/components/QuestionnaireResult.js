@@ -31,9 +31,9 @@ class QuestionnaireResult extends React.Component {
       .get(`http://localhost:5000/questionnaires/${paramId}`)
       .catch((error) => {
         if (error.response) {
-          console.log("error.res.data: ", error.res.data);
-          console.log("error.res.status: ", error.res.status);
-          console.log("error.res.headers: ", error.res.headers);
+          console.log("error.res.data: ", error.response.data);
+          console.log("error.res.status: ", error.response.status);
+          console.log("error.res.headers: ", error.response.headers);
         } else if (("error.request: ", error.request)) {
           console.log("error.request: ", error.request);
         } else {
@@ -66,7 +66,7 @@ class QuestionnaireResult extends React.Component {
               </tr>
               <tr>
                 <td>Risk of relapse in the next 2 months</td>
-                <td>{this.state.data.relapse_risk}</td>
+                <td>{this.state.data.relapse_risk}%</td>
               </tr>
               <tr>
                 <td>Drank in the last 2 months</td>

@@ -1,0 +1,26 @@
+.login-container {
+  padding: 10px;
+  margin: 0 auto;
+  height: 100vh;
+}
+
+.login-form {
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  padding: 20px;
+  margin: 0 auto;
+  width: max-content;
+}
+
+.text-input-container {
+}
+
+.login-submit {
+  margin-top: 10px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
