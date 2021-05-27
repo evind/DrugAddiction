@@ -19,6 +19,7 @@ class TextInput extends React.Component {
         <div className="text-input-label">{this.props.label}</div>
         <div className="ui input">
           <input
+            className="text-input"
             type={this.props.type}
             name={this.props.name}
             value={this.state.value}

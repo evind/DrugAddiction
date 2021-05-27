@@ -5,6 +5,7 @@ from flask_jwt_extended import (JWTManager, create_access_token,
                                create_refresh_token, get_jwt,
                                jwt_required, get_jwt_identity)
 from datetime import datetime, timedelta
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
@@ -45,12 +46,42 @@ def login():
     else:
         doctor = doctor[0]
 
-    if password != doctor["password"]:
+    if (check_password_hash(doctor["password"], password) is False):
         return jsonify({'msg': 'Bad username or password'}), 401
 
     access_token = create_access_token(identity=doctor["id"])
     refresh_token = create_refresh_token(identity=doctor["id"])
     return jsonify(access_token=access_token, refresh_token=refresh_token)
+
+
+@app.route("/patientlogin", methods=['POST'])
+def patient_login():
+    login_json = request.get_json()
+
+    email = login_json.get('email')
+    password = login_json.get('password')
+
+    patient = get_patient_by_email(email)
+
+    if patient == -1:
+        return jsonify(msg="error"), 401
+    else:
+        patient = patient[0]
+
+    if (check_password_hash(patient["password"], password) is False):
+        return jsonify({'msg': 'Bad username or password'}), 401
+
+    access_token = create_access_token(identity=patient["id"])
+    refresh_token = create_refresh_token(identity=patient["id"])
+    return jsonify(access_token=access_token, refresh_token=refresh_token)
+
+
+@app.route("/patientregister", methods=['POST'])
+def patient_register():
+    details = request.get_json()
+    register_patient(details)
+    return "ok"
+
 
 @app.route("/refresh_token", methods=['GET'])
 @jwt_required(refresh=True)
@@ -76,6 +107,19 @@ def dashboard():
 
     return jsonify(doctor=doctor, patients_in_group=patients_in_group)
 
+@app.route("/addpatient", methods=['POST'])
+@jwt_required()
+def addpatient():
+    identity = get_jwt_identity()
+    req = request.get_json()
+
+    patient_email = req.get('email')
+
+    print(identity)
+    response = add_patient(identity, patient_email)
+    print("response", response)
+
+    return response
 
 @app.route("/patientoverview/<int:patient_id>", methods=['GET'])
 @jwt_required()
@@ -97,6 +141,7 @@ def patient_overview(patient_id):
     questionnaire_data = get_patient_questionnaires(patient_id)
 
     for i in questionnaire_data:
+        print(i["submitted"], i["submitted"].isoformat())
         i["submitted"] = i["submitted"].isoformat()
 
     returnData = jsonify(
@@ -104,6 +149,15 @@ def patient_overview(patient_id):
         questionnaire_data=questionnaire_data
     )
     return returnData
+
+
+@app.route("/get_signup_code", methods=['GET'])
+@jwt_required()
+def get_signup_code():
+    identity = get_jwt_identity()
+    code = generate_signup_code(identity)
+
+    return code
 
 
 @app.route("/patients")
@@ -143,9 +197,10 @@ def get_a_questionnaire(id):
 
 
 @app.route("/submitquestionnaire", methods=["POST"])
+@jwt_required()
 def submit():
-    if request.method == "POST":
-        print("POST")
-        submission = request.get_json(force=True)
-        submit_questionnaire(submission)
+    identity = get_jwt_identity()
+    print("id: ", identity)
+    submission = request.get_json(force=True)
+    submit_questionnaire(submission, identity)
     return "ok"

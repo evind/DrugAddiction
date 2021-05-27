@@ -1,4 +1,4 @@
-.question-card {
+.patient-page-card {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
   background-color: white;
   display: block;
@@ -11,19 +11,5 @@
   height: auto;
 }
 
-.questionnaire-button-container {
-  padding: 10px;
-  margin-bottom: 100px;
-}
-
-.submit-button {
-  padding: 5px;
-  margin: 10px;
-  width: 100%;
-}
-
-.back-button {
-  padding: 5px;
-  margin: 10px;
-  width: 50%;
+.patient-page-btn-con {
 }

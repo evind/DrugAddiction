@@ -3,8 +3,9 @@ import TextInput from "../../TextInput";
 import EmailInput from "../../EmailInput";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
-import "./LoginPage.css";
 import { validate } from "react-email-validator";
+import { urls } from "../../../Utils";
+import "./LoginPage.css";
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -34,18 +35,8 @@ class LoginPage extends React.Component {
   handleLogin = (event) => {
     let emailError = this.state.emailError;
     let passwordError = this.state.passwordError;
-    let invalidCredentials = this.state.invalidCredentials;
-    let initialFormState = this.state.initialFormState;
-    let loginSuccess = this.state.loginSuccess;
     event.preventDefault();
     this.setState({ initialFormState: false });
-
-    console.log("++++++++++++++");
-    console.log("PRE LOG:");
-    console.log("initialFormState: ", this.state.initialFormState);
-    console.log("emailError: ", this.state.emailError);
-    console.log("passError: ", this.state.passwordError);
-    console.log("invalidCredentials: ", this.state.invalidCredentials);
 
     // Validate email and password input
     if (!validate(this.state.email)) {
@@ -66,7 +57,7 @@ class LoginPage extends React.Component {
 
     if (!emailError && !passwordError) {
       axios
-        .post("http://localhost:5000/login", {
+        .post(urls.backendURL + "/patientlogin", {
           email: this.state.email,
           password: this.state.password,
         })
@@ -78,18 +69,13 @@ class LoginPage extends React.Component {
         })
         .catch((err) => {
           console.log(err);
-          if (err.response.status === 401) {
-            this.setState({ invalidCredentials: true });
+          if (err.response) {
+            if (err.response.status === 401) {
+              this.setState({ invalidCredentials: true });
+            }
           }
         });
     }
-
-    console.log("--------------");
-    console.log("POST LOG:");
-    console.log("initialFormState: ", this.state.initialFormState);
-    console.log("emailError: ", this.state.emailError);
-    console.log("passError: ", this.state.passwordError);
-    console.log("invalidCredentials: ", this.state.invalidCredentials);
   };
 
   getEmailError = () => {
@@ -126,10 +112,10 @@ class LoginPage extends React.Component {
 
   renderContent = () => {
     if (this.loggedInCheck()) {
-      return <Redirect to="/dashboard" />;
+      return <Redirect to="/patient" />;
     } else {
       return (
-        <>
+        <div className="login-card">
           <form className="login-form" onSubmit={this.handleLogin}>
             Please enter your login details
             <br />
@@ -146,13 +132,14 @@ class LoginPage extends React.Component {
             {this.getInvalidCredentialsError()}
             <br />
             <div className="button-container">
-              <button className="ui button" onClick={this.onSubmit}>
+              <button className="ui button">Sign Up</button>
+              <button className="ui primary button" onClick={this.onSubmit}>
                 Submit
               </button>
             </div>
             <div>{this.state.emailError}</div>
           </form>
-        </>
+        </div>
       );
     }
   };

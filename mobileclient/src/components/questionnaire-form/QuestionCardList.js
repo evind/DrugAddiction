@@ -20,6 +20,15 @@ class QuestionCardList extends React.Component {
     this.setState({ formAnswers: data });
     this.props.onChangeCallback(data);
   };
+  // setFormAnswers = (key, val) => {
+  //   const data = {
+  //     ...this.state.formAnswers,
+  //     [key]: { value: val, hasError: false },
+  //   };
+
+  //   this.setState({ formAnswers: data });
+  //   this.props.onChangeCallback(data);
+  // };
 
   getQuestionList() {
     const QuestionList = questions.map((question) => {
@@ -28,6 +37,8 @@ class QuestionCardList extends React.Component {
           key={question.id}
           group={question.id}
           questionText={question.text}
+          // hasError={}
+          debugMode={this.props.debugMode}
           onChangeCallback={this.setFormAnswers}
         />
       );

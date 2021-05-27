@@ -80,6 +80,7 @@ class Dashboard extends React.Component {
         console.log(this.generatePatientList);
         return (
           <div>
+            <h2>Patient Group</h2>
             <ul>{this.generatePatientList()}</ul>
           </div>
         );

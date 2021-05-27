@@ -1,7 +1,8 @@
 import mariadb
 import json
 from flask import jsonify
-from datetime import datetime
+from datetime import datetime, timedelta
+from secrets import choice
 
 
 try:
@@ -51,6 +52,68 @@ def get_doctor_by_email(email):
             return data
         else:
             return -1
+
+
+def get_patient_by_email(email):
+    SQL = "SELECT * FROM patients WHERE email=?"
+    with conn.cursor(dictionary=True) as cursor:
+        cursor.execute(SQL, (email,))
+        data = cursor.fetchall()
+        print("############")
+        print(data)
+        print("############")
+        if data:
+            return data
+        else:
+            return -1
+
+
+def add_patient(doctor_id, patient_email):
+    print(doctor_id)
+    # 1. does patient email exist?
+    # 2. if yes, is patient assigned to a group?
+    # 3. if no, add patient to doctor's group
+    SQL = "SELECT doctor_id FROM patients WHERE email=?"
+    with conn.cursor(dictionary=True) as cursor:
+        cursor.execute(SQL, (patient_email,))
+        patient_details = cursor.fetchall()
+
+    if (patient_details):
+        patient_group = patient_details[0]["doctor_id"]
+        print(doctor_id)
+        if (patient_group):
+            if (patient_group == doctor_id):
+                return jsonify(msg="Patient is already in your group")
+            else:
+                return jsonify(msg="Patient is a member of another doctor's group")
+        else:
+            SQL = "UPDATE patients SET doctor_id=? WHERE email=?"
+            with conn.cursor(dictionary=True) as cursor:
+                cursor.execute(SQL, (doctor_id,patient_email,))
+            return jsonify(msg="Success")
+    else:
+        return jsonify(msg="Cannot find email")
+
+
+def generate_signup_code(doctor_id):
+    timestamp = datetime.now()
+    expires = timestamp + timedelta(days=10)
+
+    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    codeA = ''.join([choice(chars) for i in range(4)])
+    codeB = ''.join([choice(chars) for i in range(4)])
+    code = codeA + "-" + codeB
+
+    data = (doctor_id, code, timestamp, expires)
+
+    SQL = """INSERT INTO signup_codes (doctor_id, code, created, expires)
+             VALUES (?, ?, ?, ?)
+          """
+
+    with conn.cursor(dictionary=True) as cursor:
+        cursor.execute(SQL, data)
+
+    return code
 
 def get_patients_by_doctor(id):
     SQL = "SELECT * FROM patients WHERE doctor_id=?"
@@ -173,15 +236,18 @@ def calculate_relapse_risk(score, has_drank):
         return 95 if has_drank else 53
 
 
-def submit_questionnaire(submission):
+def submit_questionnaire(submission, patient_id):
+    submission["patient_id"] = patient_id
+    submission["has_drank"] = submission.pop("hasDrank")
     submission["submitted"] = datetime.now()
     submission["score"] = calculate_score(submission["answers"])
     submission["relapse_risk"] = calculate_relapse_risk(
         submission["score"], submission["has_drank"]
     )
+    print(submission["has_drank"], type(submission["has_drank"]))
 
-    # Pull values out out of "answers" array and into the root dictionary
-    # (for sorting) then delete the "answers array
+    # Pull values out out of `answers` array and into the root dictionary
+    # (for sorting) then delete the `answers` array
     for key, val in submission["answers"].items():
         submission[key] = val
     submission.pop("answers", None)
@@ -197,6 +263,11 @@ def submit_questionnaire(submission):
     buildSQL += (
         ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
     )
+
+    print("##############")
+    print(buildSQL)
+    print("data: ", data)
+    print("##############")
 
     with conn.cursor(dictionary=True) as cursor:
         cursor.execute(buildSQL, data)

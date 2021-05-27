@@ -19,6 +19,12 @@ class RadioGroup extends React.Component {
     });
   };
 
+  componentDidMount = () => {
+    if (this.props.debugMode) {
+      this.props.onChangeCallback(this.props.group, 1);
+    }
+  };
+
   render() {
     return (
       <div style={radioStyle} onChange={this.onOptionChange}>

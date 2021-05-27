@@ -1,13 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import QuestionCardList from "./QuestionCardList";
 import InitialQuestionCard from "./InitialQuestionCard";
 import axios from "axios";
-
-const urls = {
-  backendURL: "http://192.168.0.242:5000",
-  webclientURL: "http://192.168.0.242:3000",
-  mobileclientURL: "http://192.168.0.242:3001",
-};
+import { urls } from "../../Utils";
+import "./QuestionCard.css";
 
 const cardStyle = {
   backgroundColor: "white",
@@ -25,7 +22,12 @@ class QuestionForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { submitted: false, formAnswers: {} };
+    this.state = {
+      submitted: false,
+      formAnswers: {},
+      isFormValid: false,
+      hasDrank: false,
+    };
   }
 
   onFormSubmit = (event) => {
@@ -34,19 +36,40 @@ class QuestionForm extends React.Component {
     console.log(this.state.formAnswers);
 
     const data = {
-      patient_id: 4,
+      patient_id: null,
       submitted: Date.now().toString(),
-      has_drank: Math.random() < 0.5,
+      hasDrank: this.state.hasDrank,
       score: null,
       relapse_risk: null,
       answers: { ...this.state.formAnswers },
     };
 
-    axios.post(urls.backendURL + "/submitquestionnaire", data);
+    axios
+      .post(urls.backendURL + "/submitquestionnaire", data, {
+        headers: {
+          AUthorization: `Bearer ${window.localStorage.getItem("accessToken")}`,
+        },
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     this.setState({ submitted: true });
+
+    // if (isFormValid) {
+    //   axios.post(urls.backendURL + "/submitquestionnaire", data);
+    //   this.setState({ submitted: true });
+    // } else {
+    //   // new function for formAnswers
+    //   // finds invalid/empty answers
+    //   // then updates entity (e.g. formAnswer: q15)
+
+    //   // can make new obj for presentational
+    // }
   };
 
-  getInitialQuestion = () => {};
+  getInitialQuestion = (answer) => {
+    this.setState({ hasDrank: answer });
+  };
 
   getFormAnswers = (data) => {
     console.log(data);
@@ -61,6 +84,7 @@ class QuestionForm extends React.Component {
       q2: val,
       q3: val,
       q4: val,
+      //q4: {val, err},
       q5: val,
       q6: val,
       q7: val,
@@ -88,8 +112,11 @@ class QuestionForm extends React.Component {
     };
 
     const data = {
-      patient_id: 4,
-      has_drank: Math.random() < 0.5,
+      patient_id: 1,
+      submitted: Date.now().toString(),
+      hasDrank: true,
+      score: null,
+      relapse_risk: null,
       answers: { ...fakeData },
     };
 
@@ -120,13 +147,38 @@ class QuestionForm extends React.Component {
           />
           <form onSubmit={this.onFormSubmit}>
             <InitialQuestionCard onChangeCallback={this.getInitialQuestion} />
-            <QuestionCardList onChangeCallback={this.getFormAnswers} />
-            <input className="submit-button" type="submit" value="Submit" />
+            <QuestionCardList
+              debugMode={false}
+              onChangeCallback={this.getFormAnswers}
+            />
+            <div className="questionnaire-button-container">
+              <div>
+                <button className="submit-button" type="submit">
+                  Submit
+                </button>
+              </div>
+              <div>
+                <Link to="/patient">
+                  <button className="back-button" type="button">
+                    Back
+                  </button>
+                </Link>
+              </div>
+            </div>
           </form>
         </div>
       );
     } else {
-      return <div>Submission successful</div>;
+      return (
+        <div className="question-card">
+          <div className="submission-successs-container">
+            <h2>Submission successful</h2>
+            <Link to="/patient">
+              <button type="button">Home</button>
+            </Link>
+          </div>
+        </div>
+      );
     }
   }
 

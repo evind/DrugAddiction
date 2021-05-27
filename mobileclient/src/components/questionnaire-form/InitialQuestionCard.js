@@ -9,14 +9,12 @@ class InitialQuestionCard extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { hasDrank: false };
+    this.state = { answer: false };
   }
 
   onOptionChange = (event) => {
-    this.setState({ answer: parseInt(event.target.value) }, () => {
-      this.props.onChangeCallback(this.props.group, this.state.answer);
-      console.log("QuestionCard.onOptionChange()");
-      console.log(this.props.group, ":", this.state.answer);
+    this.setState({ answer: event.target.value }, () => {
+      this.props.onChangeCallback(this.state.answer);
     });
   };
 
@@ -28,11 +26,11 @@ class InitialQuestionCard extends React.Component {
         <div>
           <div style={radioStyle} onChange={this.onOptionChange}>
             <label>
-              <input type="radio" value={true} name="hasDrank" /> Yes
+              <input type="radio" value={1} name="hasDrank" /> Yes
             </label>
             <br />
             <label>
-              <input type="radio" value={false} name="hasDrank" /> No
+              <input type="radio" value={0} name="hasDrank" /> No
             </label>
             <br />
             <br />

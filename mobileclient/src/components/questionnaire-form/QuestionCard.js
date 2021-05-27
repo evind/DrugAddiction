@@ -14,6 +14,7 @@ class QuestionCard extends React.Component {
   render() {
     return (
       <div className="question-card">
+        {this.props.hasError && <div>error</div>}
         <div>
           Q.{this.props.group.slice(1) + " "}
           {this.props.questionText}
@@ -22,6 +23,7 @@ class QuestionCard extends React.Component {
         <div>
           <RadioGroup
             group={this.props.group}
+            debugMode={this.props.debugMode}
             onChangeCallback={this.getRadioGroupValue}
           />
         </div>

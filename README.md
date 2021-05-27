@@ -92,3 +92,12 @@ create table questionnaires(
      q27 tinyint,
      q28 tinyint);
 ```
+Setup table for the generation of signup codes:
+```
+create table signup_codes (
+    id int not null auto_increment primary key,
+    doctor_id int,
+    code varchar(32),
+    created datetime,
+    expires datetime);
+```

@@ -1,7 +1,9 @@
 import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
+import LoginPage from "./pages/LoginPage/LoginPage";
+import PatientPage from "./pages/PatientPage/PatientPage";
 import QuestionForm from "./questionnaire-form/QuestionForm";
-import PostTest from "./PostTest";
+import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import "../static/app.css";
 
 class App extends React.Component {
@@ -10,9 +12,11 @@ class App extends React.Component {
       <div className="App">
         <BrowserRouter>
           <Route exact path="/">
-            <QuestionForm />
+            <LoginPage />
           </Route>
-          <Route exact path="/test" component={PostTest} />
+          <Route exact path="/patient" component={PatientPage} />
+          <Route exact path="/questionnaire" component={QuestionForm} />
+          <Route exact path="/test" component={SignUpPage} />
         </BrowserRouter>
       </div>
     );
