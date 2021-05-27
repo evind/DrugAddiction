@@ -27,6 +27,8 @@ class QuestionForm extends React.Component {
       formAnswers: {},
       isFormValid: false,
       hasDrank: false,
+      missingAnswers: [],
+      renderMissingAnswers: false,
     };
   }
 
@@ -44,27 +46,26 @@ class QuestionForm extends React.Component {
       answers: { ...this.state.formAnswers },
     };
 
-    axios
-      .post(urls.backendURL + "/submitquestionnaire", data, {
-        headers: {
-          AUthorization: `Bearer ${window.localStorage.getItem("accessToken")}`,
-        },
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    this.setState({ submitted: true });
+    const missingAnswers = this.checkFormAnswers();
+    console.log("missingAnswers: ", missingAnswers);
+    this.setState({ missingAnswers: missingAnswers });
 
-    // if (isFormValid) {
-    //   axios.post(urls.backendURL + "/submitquestionnaire", data);
-    //   this.setState({ submitted: true });
-    // } else {
-    //   // new function for formAnswers
-    //   // finds invalid/empty answers
-    //   // then updates entity (e.g. formAnswer: q15)
-
-    //   // can make new obj for presentational
-    // }
+    if (missingAnswers.length === 0) {
+      axios
+        .post(urls.backendURL + "/submitquestionnaire", data, {
+          headers: {
+            AUthorization: `Bearer ${window.localStorage.getItem(
+              "accessToken"
+            )}`,
+          },
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      this.setState({ submitted: true });
+    } else {
+      this.setState({ renderMissingAnswers: true });
+    }
   };
 
   getInitialQuestion = (answer) => {
@@ -76,90 +77,58 @@ class QuestionForm extends React.Component {
     this.setState({ formAnswers: { ...data } });
   };
 
-  testSubmit = (val) => {
-    console.log("TEST SUBMIT");
+  checkFormAnswers = () => {
+    // const formData = this.state.formData;
+    const missingAnswers = [];
 
-    const fakeData = {
-      q1: val,
-      q2: val,
-      q3: val,
-      q4: val,
-      //q4: {val, err},
-      q5: val,
-      q6: val,
-      q7: val,
-      q8: val,
-      q9: val,
-      q10: val,
-      q11: val,
-      q12: val,
-      q13: val,
-      q14: val,
-      q15: val,
-      q16: val,
-      q17: val,
-      q18: val,
-      q19: val,
-      q20: val,
-      q21: val,
-      q22: val,
-      q23: val,
-      q24: val,
-      q25: val,
-      q26: val,
-      q27: val,
-      q28: val,
-    };
-
-    const data = {
-      patient_id: 1,
-      submitted: Date.now().toString(),
-      hasDrank: true,
-      score: null,
-      relapse_risk: null,
-      answers: { ...fakeData },
-    };
-
-    console.log("########");
-    console.log(data);
-
-    axios.post(urls.backendURL + "/submitquestionnaire", data);
-    this.setState({ submitted: true });
+    for (let i = 1; i < 29; i++) {
+      if (!this.state.formAnswers[`q${i}`]) {
+        missingAnswers.push(`q${i}`);
+      }
+    }
+    return missingAnswers;
   };
 
   renderContent() {
     if (this.state.submitted === false) {
       return (
         <div>
-          <input
-            type="button"
-            value="Submit 1s"
-            onClick={() => {
-              this.testSubmit(1);
-            }}
-          />
-          <input
-            type="button"
-            value="Submit 7s"
-            onClick={() => {
-              this.testSubmit(7);
-            }}
-          />
+          <div className="question-card">
+            <h3>
+              Please read the following statements and choose the option that
+              most accurately represents your experience recently.
+            </h3>
+          </div>
           <form onSubmit={this.onFormSubmit}>
             <InitialQuestionCard onChangeCallback={this.getInitialQuestion} />
             <QuestionCardList
               debugMode={false}
               onChangeCallback={this.getFormAnswers}
             />
-            <div className="questionnaire-button-container">
+            {this.state.renderMissingAnswers && (
+              <div className="question-card">
+                <div className="ui error message">
+                  <div className="header">
+                    Please choose an answer for the following questions:
+                  </div>
+                  <div>
+                    {this.state.missingAnswers.map((answer) => {
+                      return <div key={answer}>Q.{answer.split("q")[1]}</div>;
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+            <div className="question-card">
               <div>
-                <button className="submit-button" type="submit">
+                <button className="ui primary button" type="submit">
                   Submit
                 </button>
               </div>
+              <br />
               <div>
                 <Link to="/patient">
-                  <button className="back-button" type="button">
+                  <button className="ui button" type="button">
                     Back
                   </button>
                 </Link>

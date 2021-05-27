@@ -6,6 +6,7 @@ import { Redirect } from "react-router-dom";
 import { validate } from "react-email-validator";
 import { urls } from "../../../Utils";
 import "./LoginPage.css";
+import { Link } from "react-router-dom";
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -132,7 +133,9 @@ class LoginPage extends React.Component {
             {this.getInvalidCredentialsError()}
             <br />
             <div className="button-container">
-              <button className="ui button">Sign Up</button>
+              <Link className="ui button" to="/signup">
+                Sign Up
+              </Link>
               <button className="ui primary button" onClick={this.onSubmit}>
                 Submit
               </button>

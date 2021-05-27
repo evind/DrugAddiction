@@ -13,17 +13,15 @@
 
 .questionnaire-button-container {
   padding: 10px;
-  margin-bottom: 100px;
+  margin-bottom: 95%;
 }
 
-.submit-button {
-  padding: 5px;
-  margin: 10px;
+.ui.primary.button {
   width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.back-button {
-  padding: 5px;
-  margin: 10px;
-  width: 50%;
+.ui.button {
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

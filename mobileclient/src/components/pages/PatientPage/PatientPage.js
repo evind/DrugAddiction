@@ -24,12 +24,23 @@ class PatientPage extends React.Component {
       return (
         <div className="patient-page-card">
           <div className="patient-page-btn-con">
-            <Link to="/questionnaire">
-              <button type="button">Start Questionnaire</button>
-            </Link>
-            <Link to="/">
-              <button onClick={this.handleLogout}>Logout</button>
-            </Link>
+            <div>
+              <Link to="/questionnaire">
+                <button className="patient-page-btn" type="button">
+                  Start Questionnaire
+                </button>
+              </Link>
+            </div>
+            <div>
+              <Link to="/">
+                <button
+                  className="patient-page-btn"
+                  onClick={this.handleLogout}
+                >
+                  Logout
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       );

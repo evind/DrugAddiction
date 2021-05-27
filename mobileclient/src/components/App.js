@@ -16,7 +16,7 @@ class App extends React.Component {
           </Route>
           <Route exact path="/patient" component={PatientPage} />
           <Route exact path="/questionnaire" component={QuestionForm} />
-          <Route exact path="/test" component={SignUpPage} />
+          <Route exact path="/signup" component={SignUpPage} />
         </BrowserRouter>
       </div>
     );

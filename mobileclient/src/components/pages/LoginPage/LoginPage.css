@@ -15,6 +15,10 @@
   width: 100%;
 }
 
+.ui.button {
+  margin: 5px;
+}
+
 .button-container {
   display: flex;
   justify-content: space-between;

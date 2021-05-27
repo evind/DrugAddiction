@@ -115,6 +115,12 @@ def generate_signup_code(doctor_id):
 
     return code
 
+def register_patient(formData):
+    print("!!!!!!!!!!!!!!!!!!")
+    print(formData)
+    print("!!!!!!!!!!!!!!!!!!")
+    return "ok"
+
 def get_patients_by_doctor(id):
     SQL = "SELECT * FROM patients WHERE doctor_id=?"
     with conn.cursor(dictionary=True) as cursor:

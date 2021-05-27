@@ -78,8 +78,8 @@ def patient_login():
 
 @app.route("/patientregister", methods=['POST'])
 def patient_register():
-    details = request.get_json()
-    register_patient(details)
+    formData = request.get_json()
+    register_patient(formData)
     return "ok"
 
 

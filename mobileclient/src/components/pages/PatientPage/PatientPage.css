@@ -11,5 +11,8 @@
   height: auto;
 }
 
-.patient-page-btn-con {
+.patient-page-btn {
+  padding: 5px;
+  margin: 5px;
+  width: 100%;
 }
