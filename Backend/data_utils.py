@@ -3,6 +3,7 @@ import json
 from flask import jsonify
 from datetime import datetime, timedelta
 from secrets import choice
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 try:
@@ -31,9 +32,6 @@ def get_doctor(id):
     with conn.cursor(dictionary=True) as cursor:
         cursor.execute(SQL, (id,))
         data = cursor.fetchall()
-        print("############")
-        print(data)
-        print("############")
         if data:
             return data
         else:
@@ -45,9 +43,6 @@ def get_doctor_by_email(email):
     with conn.cursor(dictionary=True) as cursor:
         cursor.execute(SQL, (email,))
         data = cursor.fetchall()
-        print("############")
-        print(data)
-        print("############")
         if data:
             return data
         else:
@@ -59,9 +54,6 @@ def get_patient_by_email(email):
     with conn.cursor(dictionary=True) as cursor:
         cursor.execute(SQL, (email,))
         data = cursor.fetchall()
-        print("############")
-        print(data)
-        print("############")
         if data:
             return data
         else:
@@ -116,9 +108,64 @@ def generate_signup_code(doctor_id):
     return code
 
 def register_patient(formData):
-    print("!!!!!!!!!!!!!!!!!!")
+    # Check if email is already registered
+    print("vvvvvvvvvv")
     print(formData)
-    print("!!!!!!!!!!!!!!!!!!")
+    print("vvvvvvvvvv")
+    patient = get_patient_by_email(formData["email"])
+    if patient != -1:
+        return -1
+
+    doctor_id = 0
+    # Check if sign up code is valid
+    if (formData["signUpCode"]):
+        SQL = "SELECT doctor_id FROM signup_codes WHERE code=?"
+        with conn.cursor(dictionary=True) as cursor:
+            cursor.execute(SQL, (formData["signUpCode"],))
+            data = cursor.fetchall()
+            if (data):
+                doctor_id = data[0]["doctor_id"]
+
+    submit = (
+        doctor_id,
+        formData["firstName"],
+        formData["lastName"],
+        formData["gender"],
+        formData["email"],
+        generate_password_hash(formData["password"]),
+        datetime.fromtimestamp(formData["dob"] / 1000),
+        formData["address"],
+        formData["city"],
+        formData["region"],
+        formData["country"],
+        formData["postcode"],
+        formData["phone"],
+        datetime.now(),
+    )
+
+    SQL = ("INSERT INTO patients ("
+                "doctor_id,"
+                "first_name,"
+                "last_name,"
+                "gender,"
+                "email,"
+                "password,"
+                "dob,"
+                "address,"
+                "city,"
+                "region,"
+                "country,"
+                "postcode,"
+                "phone,"
+                "created)"
+    )
+    SQL += " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+
+    with conn.cursor(dictionary=True) as cursor:
+        cursor.execute(SQL, submit)
+        SQL = "DELETE from signup_codes WHERE code=?"
+        cursor.execute(SQL, (formData["signUpCode"],))
+
     return "ok"
 
 def get_patients_by_doctor(id):

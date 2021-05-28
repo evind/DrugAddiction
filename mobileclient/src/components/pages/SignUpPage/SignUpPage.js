@@ -70,7 +70,7 @@ class SignUpPage extends React.Component {
 
     axios
       .post(urls.backendURL + "/patientregister", {
-        postData,
+        ...postData,
       })
       .catch((err) => {
         console.log(err);
@@ -94,6 +94,18 @@ class SignUpPage extends React.Component {
             <div className="sign-up-card">
               <h3>Please enter the following details</h3>
               <form onSubmit={this.handleSubmit}>
+                <div>
+                  <label>
+                    Sign up code (leave blank if you have not received one):
+                    <input
+                      type="text"
+                      value={this.state.formData.signUpCode}
+                      onChange={(event) => {
+                        this.handleChange(event, "signUpCode");
+                      }}
+                    />
+                  </label>
+                </div>
                 <div>
                   <label>
                     First name:

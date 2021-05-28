@@ -79,8 +79,10 @@ def patient_login():
 @app.route("/patientregister", methods=['POST'])
 def patient_register():
     formData = request.get_json()
-    register_patient(formData)
-    return "ok"
+    res = register_patient(formData)
+    if res == -1:
+        return jsonify(msg="An account is already registered with this email addres"), 409
+    return res
 
 
 @app.route("/refresh_token", methods=['GET'])
