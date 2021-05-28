@@ -14,8 +14,6 @@ class RadioGroup extends React.Component {
   onOptionChange = (event) => {
     this.setState({ answer: parseInt(event.target.value) }, () => {
       this.props.onChangeCallback(this.props.group, this.state.answer);
-      console.log("QuestionCard.onOptionChange()");
-      console.log(this.props.group, ":", this.state.answer);
     });
   };
 

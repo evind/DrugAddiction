@@ -61,27 +61,28 @@ def get_patient_by_email(email):
 
 
 def add_patient(doctor_id, patient_email):
-    print(doctor_id)
-    # 1. does patient email exist?
-    # 2. if yes, is patient assigned to a group?
-    # 3. if no, add patient to doctor's group
     SQL = "SELECT doctor_id FROM patients WHERE email=?"
     with conn.cursor(dictionary=True) as cursor:
         cursor.execute(SQL, (patient_email,))
         patient_details = cursor.fetchall()
 
-    if (patient_details):
+    if patient_details:
         patient_group = patient_details[0]["doctor_id"]
-        print(doctor_id)
-        if (patient_group):
-            if (patient_group == doctor_id):
+        if patient_group:
+            if patient_group == doctor_id:
                 return jsonify(msg="Patient is already in your group")
             else:
                 return jsonify(msg="Patient is a member of another doctor's group")
         else:
             SQL = "UPDATE patients SET doctor_id=? WHERE email=?"
             with conn.cursor(dictionary=True) as cursor:
-                cursor.execute(SQL, (doctor_id,patient_email,))
+                cursor.execute(
+                    SQL,
+                    (
+                        doctor_id,
+                        patient_email,
+                    ),
+                )
             return jsonify(msg="Success")
     else:
         return jsonify(msg="Cannot find email")
@@ -92,8 +93,8 @@ def generate_signup_code(doctor_id):
     expires = timestamp + timedelta(days=10)
 
     chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-    codeA = ''.join([choice(chars) for i in range(4)])
-    codeB = ''.join([choice(chars) for i in range(4)])
+    codeA = "".join([choice(chars) for i in range(4)])
+    codeB = "".join([choice(chars) for i in range(4)])
     code = codeA + "-" + codeB
 
     data = (doctor_id, code, timestamp, expires)
@@ -107,23 +108,21 @@ def generate_signup_code(doctor_id):
 
     return code
 
+
 def register_patient(formData):
     # Check if email is already registered
-    print("vvvvvvvvvv")
-    print(formData)
-    print("vvvvvvvvvv")
     patient = get_patient_by_email(formData["email"])
     if patient != -1:
         return -1
 
     doctor_id = 0
     # Check if sign up code is valid
-    if (formData["signUpCode"]):
+    if formData["signUpCode"]:
         SQL = "SELECT doctor_id FROM signup_codes WHERE code=?"
         with conn.cursor(dictionary=True) as cursor:
             cursor.execute(SQL, (formData["signUpCode"],))
             data = cursor.fetchall()
-            if (data):
+            if data:
                 doctor_id = data[0]["doctor_id"]
 
     submit = (
@@ -143,21 +142,22 @@ def register_patient(formData):
         datetime.now(),
     )
 
-    SQL = ("INSERT INTO patients ("
-                "doctor_id,"
-                "first_name,"
-                "last_name,"
-                "gender,"
-                "email,"
-                "password,"
-                "dob,"
-                "address,"
-                "city,"
-                "region,"
-                "country,"
-                "postcode,"
-                "phone,"
-                "created)"
+    SQL = (
+        "INSERT INTO patients ("
+        "doctor_id,"
+        "first_name,"
+        "last_name,"
+        "gender,"
+        "email,"
+        "password,"
+        "dob,"
+        "address,"
+        "city,"
+        "region,"
+        "country,"
+        "postcode,"
+        "phone,"
+        "created)"
     )
     SQL += " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 
@@ -168,6 +168,7 @@ def register_patient(formData):
 
     return "ok"
 
+
 def get_patients_by_doctor(id):
     SQL = "SELECT * FROM patients WHERE doctor_id=?"
     with conn.cursor(dictionary=True) as cursor:
@@ -176,12 +177,14 @@ def get_patients_by_doctor(id):
         returnData = []
 
         for i in data:
-            returnData.append({
-                "id": i["id"],
-                "first_name": i["first_name"],
-                "last_name": i["last_name"],
-                "dob": i["dob"]
-            })
+            returnData.append(
+                {
+                    "id": i["id"],
+                    "first_name": i["first_name"],
+                    "last_name": i["last_name"],
+                    "dob": i["dob"],
+                }
+            )
 
         return returnData
 
@@ -297,7 +300,6 @@ def submit_questionnaire(submission, patient_id):
     submission["relapse_risk"] = calculate_relapse_risk(
         submission["score"], submission["has_drank"]
     )
-    print(submission["has_drank"], type(submission["has_drank"]))
 
     # Pull values out out of `answers` array and into the root dictionary
     # (for sorting) then delete the `answers` array
@@ -317,10 +319,6 @@ def submit_questionnaire(submission, patient_id):
         ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
     )
 
-    print("##############")
-    print(buildSQL)
-    print("data: ", data)
-    print("##############")
 
     with conn.cursor(dictionary=True) as cursor:
         cursor.execute(buildSQL, data)

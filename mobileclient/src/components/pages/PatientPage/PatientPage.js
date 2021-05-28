@@ -16,11 +16,8 @@ class PatientPage extends React.Component {
 
   renderContent = () => {
     const accessToken = window.localStorage.getItem("accessToken");
-    console.log("/patient accessToken: ", accessToken);
-    console.log(this.state.data);
 
     if (accessToken) {
-      console.log("yes access token");
       return (
         <div className="patient-page-card">
           <div className="patient-page-btn-con">

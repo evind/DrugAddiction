@@ -1,19 +1,22 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from data_utils import *
-from flask_jwt_extended import (JWTManager, create_access_token,
-                               create_refresh_token, get_jwt,
-                               jwt_required, get_jwt_identity)
+from flask_jwt_extended import (
+    JWTManager,
+    create_access_token,
+    create_refresh_token,
+    get_jwt,
+    jwt_required,
+    get_jwt_identity,
+)
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
-app.config['JWT_SECRET_KEY'] = 'ejkwlqejqlwk'
+app.config["JWT_SECRET_KEY"] = "ejkwlqejqlwk289qe7q9e8eq98qeq9q9"
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=24)
 app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=20)
-# cors = CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
-# cors = CORS(app, resources={r"/*": {"origins": "*"}})
 jwt = JWTManager(app)
 CORS(app)
 
@@ -23,21 +26,12 @@ def hello_world():
     return "Running..."
 
 
-"""
-Refresh tokens:
-    1. Store the expiry time of access token in frontend
-    2. Each time you make an API requests, first check if current access token
-       is near or already expired
-      2a. If yes: refresh it
-      2b. Else: send access token
-"""
-@app.route("/login", methods=['POST'])
+@app.route("/login", methods=["POST"])
 def login():
-    print("### /login: ")
     login_json = request.get_json()
 
-    email = login_json.get('email')
-    password = login_json.get('password')
+    email = login_json.get("email")
+    password = login_json.get("password")
 
     doctor = get_doctor_by_email(email)
 
@@ -46,20 +40,20 @@ def login():
     else:
         doctor = doctor[0]
 
-    if (check_password_hash(doctor["password"], password) is False):
-        return jsonify({'msg': 'Bad username or password'}), 401
+    if check_password_hash(doctor["password"], password) is False:
+        return jsonify({"msg": "Bad username or password"}), 401
 
     access_token = create_access_token(identity=doctor["id"])
     refresh_token = create_refresh_token(identity=doctor["id"])
     return jsonify(access_token=access_token, refresh_token=refresh_token)
 
 
-@app.route("/patientlogin", methods=['POST'])
+@app.route("/patientlogin", methods=["POST"])
 def patient_login():
     login_json = request.get_json()
 
-    email = login_json.get('email')
-    password = login_json.get('password')
+    email = login_json.get("email")
+    password = login_json.get("password")
 
     patient = get_patient_by_email(email)
 
@@ -68,33 +62,35 @@ def patient_login():
     else:
         patient = patient[0]
 
-    if (check_password_hash(patient["password"], password) is False):
-        return jsonify({'msg': 'Bad username or password'}), 401
+    if check_password_hash(patient["password"], password) is False:
+        return jsonify({"msg": "Bad username or password"}), 401
 
     access_token = create_access_token(identity=patient["id"])
     refresh_token = create_refresh_token(identity=patient["id"])
     return jsonify(access_token=access_token, refresh_token=refresh_token)
 
 
-@app.route("/patientregister", methods=['POST'])
+@app.route("/patientregister", methods=["POST"])
 def patient_register():
     formData = request.get_json()
     res = register_patient(formData)
     if res == -1:
-        return jsonify(msg="An account is already registered with this email addres"), 409
+        return (
+            jsonify(msg="An account is already registered with this email addres"),
+            409,
+        )
     return res
 
 
-@app.route("/refresh_token", methods=['GET'])
+@app.route("/refresh_token", methods=["GET"])
 @jwt_required(refresh=True)
 def refresh_token():
-    print("### /refresh_token: ", get_jwt_identity)
     identity = get_jwt_identity()
     access_token = create_access_token(identity=identity)
     return jsonify(access_token=access_token)
 
 
-@app.route("/dashboard", methods=['GET'])
+@app.route("/dashboard", methods=["GET"])
 @jwt_required()
 def dashboard():
     identity = get_jwt_identity()
@@ -109,21 +105,21 @@ def dashboard():
 
     return jsonify(doctor=doctor, patients_in_group=patients_in_group)
 
-@app.route("/addpatient", methods=['POST'])
+
+@app.route("/addpatient", methods=["POST"])
 @jwt_required()
 def addpatient():
     identity = get_jwt_identity()
     req = request.get_json()
 
-    patient_email = req.get('email')
+    patient_email = req.get("email")
 
-    print(identity)
     response = add_patient(identity, patient_email)
-    print("response", response)
 
     return response
 
-@app.route("/patientoverview/<int:patient_id>", methods=['GET'])
+
+@app.route("/patientoverview/<int:patient_id>", methods=["GET"])
 @jwt_required()
 def patient_overview(patient_id):
     identity = get_jwt_identity()
@@ -142,18 +138,14 @@ def patient_overview(patient_id):
     # Get questionnaire data for this patient
     questionnaire_data = get_patient_questionnaires(patient_id)
 
-    for i in questionnaire_data:
-        print(i["submitted"], i["submitted"].isoformat())
-        i["submitted"] = i["submitted"].isoformat()
 
     returnData = jsonify(
-        patient_details=patient_details,
-        questionnaire_data=questionnaire_data
+        patient_details=patient_details, questionnaire_data=questionnaire_data
     )
     return returnData
 
 
-@app.route("/get_signup_code", methods=['GET'])
+@app.route("/get_signup_code", methods=["GET"])
 @jwt_required()
 def get_signup_code():
     identity = get_jwt_identity()
@@ -202,7 +194,6 @@ def get_a_questionnaire(id):
 @jwt_required()
 def submit():
     identity = get_jwt_identity()
-    print("id: ", identity)
     submission = request.get_json(force=True)
     submit_questionnaire(submission, identity)
     return "ok"

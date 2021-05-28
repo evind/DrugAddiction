@@ -10,7 +10,6 @@ class PatientDetails extends React.Component {
 
   render() {
     const patientDetails = this.props.patientDetails;
-    console.log("patient details: ", patientDetails);
     return (
       <div className="patient-details-container">
         <div className="patient-details-header">Patient Details</div>

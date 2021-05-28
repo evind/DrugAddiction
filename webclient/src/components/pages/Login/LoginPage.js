@@ -40,13 +40,6 @@ class LoginPage extends React.Component {
     event.preventDefault();
     this.setState({ initialFormState: false });
 
-    console.log("++++++++++++++");
-    console.log("PRE LOG:");
-    console.log("initialFormState: ", this.state.initialFormState);
-    console.log("emailError: ", this.state.emailError);
-    console.log("passError: ", this.state.passwordError);
-    console.log("invalidCredentials: ", this.state.invalidCredentials);
-
     // Validate email and password input
     if (!validate(this.state.email)) {
       this.setState({ emailError: true });
@@ -74,7 +67,6 @@ class LoginPage extends React.Component {
           window.localStorage.setItem("accessToken", res.data.access_token);
           window.localStorage.setItem("refreshToken", res.data.refresh_token);
           this.setState({ loginSuccess: true });
-          console.log("this.props: ", this.props);
         })
         .catch((err) => {
           console.log(err);
@@ -83,13 +75,6 @@ class LoginPage extends React.Component {
           }
         });
     }
-
-    console.log("--------------");
-    console.log("POST LOG:");
-    console.log("initialFormState: ", this.state.initialFormState);
-    console.log("emailError: ", this.state.emailError);
-    console.log("passError: ", this.state.passwordError);
-    console.log("invalidCredentials: ", this.state.invalidCredentials);
   };
 
   getEmailError = () => {

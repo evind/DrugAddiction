@@ -66,7 +66,6 @@ class LoginPage extends React.Component {
           window.localStorage.setItem("accessToken", res.data.access_token);
           window.localStorage.setItem("refreshToken", res.data.refresh_token);
           this.setState({ loginSuccess: true });
-          console.log("this.props: ", this.props);
         })
         .catch((err) => {
           console.log(err);

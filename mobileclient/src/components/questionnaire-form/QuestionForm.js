@@ -34,8 +34,6 @@ class QuestionForm extends React.Component {
 
   onFormSubmit = (event) => {
     event.preventDefault();
-    console.log("submit");
-    console.log(this.state.formAnswers);
 
     const data = {
       patient_id: null,
@@ -47,7 +45,6 @@ class QuestionForm extends React.Component {
     };
 
     const missingAnswers = this.checkFormAnswers();
-    console.log("missingAnswers: ", missingAnswers);
     this.setState({ missingAnswers: missingAnswers });
 
     if (missingAnswers.length === 0) {
@@ -73,7 +70,6 @@ class QuestionForm extends React.Component {
   };
 
   getFormAnswers = (data) => {
-    console.log(data);
     this.setState({ formAnswers: { ...data } });
   };
 

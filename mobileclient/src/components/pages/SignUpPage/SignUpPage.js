@@ -6,27 +6,6 @@ import "./SignUpPage.css";
 import { urls } from "../../../Utils";
 import { Zoom } from "@material-ui/core";
 
-/* 
-Create an object:
-details: {
-  signUpCode: optional
-  doctorId: null or request doctor ID from sign up code,
-  firstName:
-  lastName:
-  gender:
-  email:
-  password:
-  dob:
-  address:
-  city:
-  region:
-  country:
-  postcode:
-  phone:
-  created: should do this in back end
-}
-*/
-
 class SignUpPage extends React.Component {
   constructor(props) {
     super(props);
@@ -52,7 +31,6 @@ class SignUpPage extends React.Component {
   }
 
   handleChange = (event, key) => {
-    console.log("this is my value: ", event.target.value);
     this.setState({
       formData: {
         ...this.state.formData,

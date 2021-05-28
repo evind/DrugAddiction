@@ -14,7 +14,6 @@ class PatientOverviewPage extends React.Component {
   }
 
   componentDidMount = () => {
-    console.log("componentDidMount()");
     const paramId = this.props.match.params.id;
     axios
       .get(`http://127.0.0.1:5000/patientoverview/${paramId}`, {
@@ -23,13 +22,10 @@ class PatientOverviewPage extends React.Component {
         },
       })
       .then((res) => {
-        console.log("questionnaire_data: ", res.data.questionnaire_data);
-
         // Date submitted is retrieved as a string, convert to JavaScript date
         const arr = res.data.questionnaire_data;
         for (let i = 0; i < arr.length; i++) {
           const date = new Date(arr[i].submitted);
-          console.log(res.data.questionnaire_data[i].submitted, " -> ", date);
           res.data.questionnaire_data[i].submitted = date;
         }
 
@@ -59,9 +55,7 @@ class PatientOverviewPage extends React.Component {
   };
 
   renderPatientDetails = () => {
-    console.log("patientoverviewpage state: ", this.state);
     if (this.state.dataRetrieved) {
-      console.log("dataRetrieved: ", this.state.data);
       return (
         <div>
           <div className="patient-overview-top">
@@ -92,7 +86,6 @@ class PatientOverviewPage extends React.Component {
         </div>
       );
     } else {
-      console.log("!dataRetrieved: ", this.state.data);
       return <h1>Loading...</h1>;
     }
   };

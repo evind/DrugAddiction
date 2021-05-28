@@ -2,7 +2,6 @@ import React from "react";
 import TableData from "./TableData";
 
 const TableRowList = (props) => {
-  console.log(props);
   let i = 0;
   const tableRows = props.results.map((row) => {
     i++;
