@@ -1,5 +1,5 @@
 import React from "react";
-import TableData from "./TableData";
+import TableData from "./TableData2";
 
 const TableRowList = (props) => {
   let i = 0;
